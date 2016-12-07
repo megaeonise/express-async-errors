@@ -1,27 +1,26 @@
 {
-  "name": "express-yields",
+  "name": "express-async-errors",
   "version": "1.0.2",
-  "description": "ES6 Generators support for expressjs",
+  "description": "Async/await error handling support for expressjs",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MadRabbit/express-yields.git"
+    "url": "git+https://github.com/davidbanham/express-async-errors.git"
   },
   "keywords": [
     "expressjs",
-    "generators",
+    "async/await",
+    "async",
+    "await",
     "es6"
   ],
-  "author": "Nikolay Nemshilov",
+  "author": "david@banham.id.au",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/MadRabbit/express-yields/issues"
+    "url": "https://github.com/davidbanham/express-async-errors/issues"
   },
-  "homepage": "https://github.com/MadRabbit/express-yields#readme",
-  "dependencies": {
-    "co": "^4.6.0"
-  }
+  "homepage": "https://github.com/davidbanham/express-async-errors#readme"
 }
