@@ -1,5 +1,7 @@
 # ExpressJS Async Errors
 
+[![Build Status](https://travis-ci.org/davidbanham/express-async-errors.svg?branch=master)](https://travis-ci.org/davidbanham/express-async-errors)
+
 A dead simple ES6 async/await support hack for [ExpressJS](http://expressjs.com)
 
 Shamelessly copied from [express-yields](https://github.com/MadRabbit/express-yields)
