@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "precommit": "npm run lint"
   },
   "repository": {
     "type": "git",
@@ -31,6 +32,7 @@
     "eslint": "^4.10.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
+    "husky": "^0.14.3",
     "mocha": "^4.0.1",
     "supertest": "^3.0.0"
   }
