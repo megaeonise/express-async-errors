@@ -4,7 +4,8 @@
   "description": "Async/await error handling support for expressjs",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test.js"
+    "test": "mocha test.js",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,9 @@
     "express": "^4.16.2"
   },
   "devDependencies": {
+    "eslint": "^4.10.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
     "mocha": "^4.0.1",
     "supertest": "^3.0.0"
   }
