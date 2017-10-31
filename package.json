@@ -4,7 +4,7 @@
   "description": "Async/await error handling support for expressjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test.js"
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,10 @@
   "bugs": {
     "url": "https://github.com/davidbanham/express-async-errors/issues"
   },
-  "homepage": "https://github.com/davidbanham/express-async-errors#readme"
+  "homepage": "https://github.com/davidbanham/express-async-errors#readme",
+  "devDependencies": {
+    "express": "^4.16.2",
+    "mocha": "^4.0.1",
+    "supertest": "^3.0.0"
+  }
 }
