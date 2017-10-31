@@ -3,23 +3,22 @@ const express = require('express');
 const supertest = require('supertest');
 
 describe('express-async-errors', function(){
-	it('propagates routes errors to error handler', function(){
-		const app = express();       
-		
+  it('propagates routes errors to error handler', function(){
+    const app = express();       
 
-		app.get('/test', async function(){
-			throw 'error'
-		});
+    app.get('/test', async function(){
+      throw 'error'
+    });
 
-		app.use(function(err, req, res, next){
-			res.status(495);
-			res.end();
-		});
+    app.use(function(err, req, res, next){
+      res.status(495);
+      res.end();
+    });
 
-		return supertest(app)
-			.get('/test')
-			.expect(495)
-	});
+    return supertest(app)
+      .get('/test')
+      .expect(495)
+  });
 
   it('propagates regular middleware errors too', function(){
     const app = express();
