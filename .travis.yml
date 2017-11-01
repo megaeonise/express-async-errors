@@ -1,4 +1,11 @@
 language: node_js
 node_js:
+  - "7.6"
   - "node"
   - "8"
+deploy:
+  provider: npm
+  email: "banham_something"
+  api_key: "your encrypted auth token. See https://docs.travis-ci.com/user/deployment/npm/"
+  on:
+    tags: true

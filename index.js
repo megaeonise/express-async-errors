@@ -2,7 +2,7 @@ const Layer = require('express/lib/router/layer');
 
 function wrapErrorMiddleware(fn) {
   return (err, req, res, next) => {
-    const ret = fn(err, req, res, next);
+    const ret = fn.call(this, err, req, res, next);
 
     if (ret && ret.catch) {
       ret.catch(innerErr => next(innerErr));
@@ -14,7 +14,7 @@ function wrapErrorMiddleware(fn) {
 
 function wrap(fn) {
   return (req, res, next) => {
-    const ret = fn(req, res, next);
+    const ret = fn.call(this, req, res, next);
 
     if (ret && ret.catch) {
       ret.catch((err) => {
