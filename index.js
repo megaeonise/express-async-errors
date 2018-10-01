@@ -7,15 +7,7 @@ function copyFnProps(oldFn, newFn) {
   Object.keys(oldFn).forEach((key) => {
     newFn[key] = oldFn[key];
   });
-}
-
-function preserveFnArity(oldFn, newFn) {
-  ['name', 'length'].forEach((key) => {
-    Object.defineProperty(newFn, key, {
-      value: oldFn[key],
-      writable: false,
-    });
-  });
+  return newFn;
 }
 
 function wrap(fn) {
@@ -25,9 +17,11 @@ function wrap(fn) {
     if (ret && ret.catch) ret.catch(err => next(err));
     return ret;
   };
-  copyFnProps(fn, newFn);
-  preserveFnArity(fn, newFn);
-  return newFn;
+  Object.defineProperty(newFn, 'length', {
+    value: fn.length,
+    writable: false,
+  });
+  return copyFnProps(fn, newFn);
 }
 
 Object.defineProperty(Layer.prototype, 'handle', {
