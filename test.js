@@ -63,6 +63,28 @@ describe('express-async-errors', () => {
       .expect(495);
   });
 
+  it('and propagates param middleware errors too', () => {
+    const app = express();
+
+    app.param('id', async () => {
+      throw new Error('error');
+    });
+
+    app.get('/test/:id', async (err, req, next, id) => {
+      console.log(id);
+      throw new Error('error');
+    });
+
+    app.use((err, req, res, next) => {
+      res.status(495);
+      res.end();
+    });
+
+    return supertest(app)
+      .get('/test/12')
+      .expect(495);
+  });
+
   it('should preserve the router stack for external routes', () => {
     const app = express();
 

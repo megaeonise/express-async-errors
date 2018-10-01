@@ -1,6 +1,7 @@
 const Layer = require('express/lib/router/layer');
+const Router = require('express/lib/router');
 
-const last = arr => arr[arr.length - 1];
+const last = (arr = []) => arr[arr.length - 1];
 const noop = Function.prototype;
 
 function copyFnProps(oldFn, newFn) {
@@ -11,9 +12,9 @@ function copyFnProps(oldFn, newFn) {
 }
 
 function wrap(fn) {
-  const newFn = (...args) => {
+  const newFn = function newFn(...args) {
     const ret = fn.apply(this, args);
-    const next = args.length > 2 ? last(args) : noop;
+    const next = (args.length === 5 ? args[2] : last(args)) || noop;
     if (ret && ret.catch) ret.catch(err => next(err));
     return ret;
   };
@@ -22,6 +23,14 @@ function wrap(fn) {
     writable: false,
   });
   return copyFnProps(fn, newFn);
+}
+
+function patchRouterParam() {
+  const originalParam = Router.prototype.constructor.param;
+  Router.prototype.constructor.param = function param(name, fn) {
+    fn = wrap(fn);
+    return originalParam.call(this, name, fn);
+  };
 }
 
 Object.defineProperty(Layer.prototype, 'handle', {
@@ -34,3 +43,5 @@ Object.defineProperty(Layer.prototype, 'handle', {
     this.__handle = fn;
   },
 });
+
+patchRouterParam();
