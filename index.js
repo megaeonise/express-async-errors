@@ -1,38 +1,36 @@
 const Layer = require('express/lib/router/layer');
+const Router = require('express/lib/router');
 
-function copyOldProps(oldFn, newFn) {
+const last = (arr = []) => arr[arr.length - 1];
+const noop = Function.prototype;
+
+function copyFnProps(oldFn, newFn) {
   Object.keys(oldFn).forEach((key) => {
     newFn[key] = oldFn[key];
   });
   return newFn;
 }
 
-function wrapErrorMiddleware(fn) {
-  const newFn = (err, req, res, next) => {
-    const ret = fn.call(this, err, req, res, next);
-
-    if (ret && ret.catch) {
-      ret.catch(innerErr => next(innerErr));
-    }
-
+function wrap(fn) {
+  const newFn = function newFn(...args) {
+    const ret = fn.apply(this, args);
+    const next = (args.length === 5 ? args[2] : last(args)) || noop;
+    if (ret && ret.catch) ret.catch(err => next(err));
     return ret;
   };
-  return copyOldProps(fn, newFn);
+  Object.defineProperty(newFn, 'length', {
+    value: fn.length,
+    writable: false,
+  });
+  return copyFnProps(fn, newFn);
 }
 
-function wrap(fn) {
-  const newFn = (req, res, next) => {
-    const ret = fn.call(this, req, res, next);
-
-    if (ret && ret.catch) {
-      ret.catch((err) => {
-        next(err);
-      });
-    }
-
-    return ret;
+function patchRouterParam() {
+  const originalParam = Router.prototype.constructor.param;
+  Router.prototype.constructor.param = function param(name, fn) {
+    fn = wrap(fn);
+    return originalParam.call(this, name, fn);
   };
-  return copyOldProps(fn, newFn);
 }
 
 Object.defineProperty(Layer.prototype, 'handle', {
@@ -41,13 +39,9 @@ Object.defineProperty(Layer.prototype, 'handle', {
     return this.__handle;
   },
   set(fn) {
-    // Bizarre, but Express checks for 4 args to detect error middleware: https://github.com/expressjs/express/blob/master/lib/router/layer.js
-    if (fn.length === 4) {
-      fn = wrapErrorMiddleware(fn);
-    } else {
-      fn = wrap(fn);
-    }
-
+    fn = wrap(fn);
     this.__handle = fn;
   },
 });
+
+patchRouterParam();
